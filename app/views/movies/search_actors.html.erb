@@ -1,10 +1,12 @@
 <h1><em>Add Actors to Movie:</em></h1>
 <br><br>
 <% @actors.each do |actor| %>
-  <div id="actor-<%= actor.id %>">
+  <% if !actor.in_current_movie?(params[:id]) %>
+    <div id="actor-<%= actor.id %>">
       <h3><%= actor.name %></h3>
       <p>Age: <%= actor.age %></p>
       <%= button_to "Add #{actor.name}", "/movies/#{params[:id]}/add_actor", method: :post, params: { actor_id: "#{actor.id}" } %>
       <br><br>
-  </div>
+    </div>
+  <% end %>
 <% end %>
