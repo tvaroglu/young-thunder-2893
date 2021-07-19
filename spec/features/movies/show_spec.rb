@@ -21,18 +21,18 @@ RSpec.describe 'movie show' do
       creation_year: 2001,
       genre: 'Comedy')
 
-    visit "/movies/#{universal.movies.first.id}"
+    visit "/movies/#{universal.movies.all.first.id}"
     # save_and_open_page
 
-    expect(page).to have_content("Movie Name: #{universal.movies.first.title}")
-    expect(page).to have_content("Movie Name: #{universal.movies.first.creation_year}")
-    expect(page).to have_content("Movie Name: #{universal.movies.first.genre}")
-    expect(page).to_not have_content("Movie Name: #{universal.movies.last.title}")
-    expect(page).to_not have_content("Movie Name: #{universal.movies.last.creation_year}")
-    expect(page).to_not have_content("Movie Name: #{universal.movies.last.genre}")
+    expect(page).to have_content("Movie: #{universal.movies.all.first.title}")
+    expect(page).to have_content("Year Created: #{universal.movies.all.first.creation_year}")
+    expect(page).to have_content("Genre: #{universal.movies.all.first.genre}")
+    expect(page).to_not have_content("Movie: #{universal.movies.all.last.title}")
+    expect(page).to_not have_content("Year Created: #{universal.movies.all.last.creation_year}")
+    expect(page).to_not have_content("Genre: #{universal.movies.all.last.genre}")
   end
 
-  xit 'can sort actors by age and return their average age' do
+  it 'can sort actors by age and return their average age' do
     universal = Studio.create!(
       name: 'Universal Studios',
       location: 'Hollywood')
@@ -40,13 +40,33 @@ RSpec.describe 'movie show' do
       title: 'Raiders of the Lost Ark',
       creation_year: 1981,
       genre: 'Action/Adventure')
-    universal.movies.create!(
-      title: 'Shrek',
-      creation_year: 2001,
-      genre: 'Comedy')
 
-  # more stuff once DB schema is set up and re-migrated
+    actors = [
+      Actor.create!(
+        name: 'Bryan Cranston',
+        age: 65),
+      Actor.create!(
+        name: 'James Franco',
+        age: 43)
+      ]
+    actors.each { |actor| universal.movies.all.first.actors << actor }
+
+    visit "/movies/#{universal.movies.all.first.id}"
+    save_and_open_page
+    expect(page).to have_content("All Actors - Average Age: #{universal.movies.all.first.average_actor_age}")
+
+    within "#actor-#{universal.movies.all.first.actors.first.id}" do
+      expect(page).to have_content("Name: #{universal.movies.all.first.actors.first.name}")
+      expect(page).to have_content("Age: #{universal.movies.all.first.actors.first.age}")
+    end
+    within "#actor-#{universal.movies.all.first.actors.last.id}" do
+      expect(page).to have_content("Name: #{universal.movies.all.first.actors.last.name}")
+      expect(page).to have_content("Age: #{universal.movies.all.first.actors.last.age}")
+    end
+
+    click_on 'Sort Actors by Age'
+
+    expect(actors.last.name).to appear_before(actors.first.name)
   end
-
 
 end

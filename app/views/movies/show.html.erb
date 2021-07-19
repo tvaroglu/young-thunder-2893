@@ -1,0 +1,14 @@
+<h1>Movie: <%= @movie.title %></h1>
+
+<h3>Year Created: <%= "#{@movie.creation_year}" %></h3>
+<h3>Genre: <%= "#{@movie.genre}" %></h3>
+<br><br>
+<h4>All Actors - Average Age: <%= @movie.average_actor_age %></h4>
+<%= button_to "Sort Actors by Age", "/movies/#{@movie.id}", method: :get, params: { sort: 'age' } %>
+<br>
+<% @actors.each do |actor| %>
+  <div id="actor-<%= actor.id %>">
+    <p>Name: <%= "#{actor.name}" %></p>
+    <p>Age: <%= "#{actor.age}" %></p>
+  </div>
+<% end %>
