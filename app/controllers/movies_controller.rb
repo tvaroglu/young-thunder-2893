@@ -9,4 +9,16 @@ class MoviesController < ApplicationController
     end
   end
 
+  def search_actors
+    @movie = Movie.find(params[:id])
+    @actors = Actor.search(params[:search])
+  end
+
+  def add_actor
+    @movie = Movie.find(params[:id])
+    @actor = Actor.find(params[:actor_id])
+    @movie.actors << @actor
+    redirect_to "/movies/#{@movie.id}"
+  end
+
 end

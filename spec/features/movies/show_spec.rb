@@ -52,7 +52,7 @@ RSpec.describe 'movie show' do
     actors.each { |actor| universal.movies.all.first.actors << actor }
 
     visit "/movies/#{universal.movies.all.first.id}"
-    save_and_open_page
+    # save_and_open_page
     expect(page).to have_content("All Actors - Average Age: #{universal.movies.all.first.average_actor_age}")
 
     within "#actor-#{universal.movies.all.first.actors.first.id}" do
@@ -67,6 +67,55 @@ RSpec.describe 'movie show' do
     click_on 'Sort Actors by Age'
 
     expect(actors.last.name).to appear_before(actors.first.name)
+  end
+
+  it 'can add actors to a movie' do
+  # Story 3
+  # Add an Actor to a Movie
+    # As a user,
+    # When I visit a movie show page,
+    # I do not see any actors listed that are not part of the movie
+    # And I see a form to add an actor to this movie
+    # When I fill in the form with the name of an actor that exists in the database
+    # And I click submit
+    # Then I am redirected back to that movie's show page
+    # And I see the actor's name is now listed
+    # (You do not have to test for a sad path, for example if the name submitted is not an existing actor)
+    universal = Studio.create!(
+      name: 'Universal Studios',
+      location: 'Hollywood')
+    universal.movies.create!(
+      title: 'Raiders of the Lost Ark',
+      creation_year: 1981,
+      genre: 'Action/Adventure')
+
+    actors = [
+      Actor.create!(
+        name: 'Bryan Cranston',
+        age: 65),
+      Actor.create!(
+        name: 'James Franco',
+        age: 43)
+      ]
+
+    visit "/movies/#{universal.movies.all.first.id}"
+    # save_and_open_page
+
+    expect(page).to have_content('Add Actors to Movie')
+    expect(page).to have_button('Search Actors')
+    expect(page).to_not have_content(actors.first.name)
+    expect(page).to_not have_content(actors.first.age)
+
+    fill_in 'Actor Name:', with: actors.first.name
+    click_on('Search Actors')
+
+    expect(current_path).to eq("/movies/#{universal.movies.all.first.id}/search")
+
+    click_on("Add #{actors.first.name}")
+
+    expect(current_path).to eq("/movies/#{universal.movies.all.first.id}")
+    expect(page).to have_content(actors.first.name)
+    expect(page).to have_content(actors.first.age)
   end
 
 end
