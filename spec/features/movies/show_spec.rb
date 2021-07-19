@@ -8,7 +8,7 @@ RSpec.describe 'movie show' do
     # I see the movie's title, creation year, and genre,
     # and a list of all its actors from youngest to oldest.
     # And I see the average age of all of the movie's actors
-  xit 'can list a movie and corresponding attributes' do
+  it 'can list a movie and corresponding attributes' do
     universal = Studio.create!(
       name: 'Universal Studios',
       location: 'Hollywood')
