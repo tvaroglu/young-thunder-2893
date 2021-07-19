@@ -1,0 +1,7 @@
+<h1>All Studios</h1>
+
+<% @studios.each do |studio| %>
+  <h3>Studio Name: <%= "#{studio.name}" %></h3>
+  <h4>Studio Location: <%= "#{studio.location}" %></h4>
+  <br>
+<% end %>
