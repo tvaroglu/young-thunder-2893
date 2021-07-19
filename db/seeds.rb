@@ -7,6 +7,9 @@ Studio.destroy_all
 universal = Studio.create!(
   name: 'Universal Studios',
   location: 'Hollywood')
+paramount = Studio.create!(
+  name: 'Paramount Studios',
+  location: 'Hollywood')
 
 # Movies
 universal.movies.create!(
@@ -16,6 +19,10 @@ universal.movies.create!(
 universal.movies.create!(title: 'Shrek',
   creation_year: 2001,
   genre: 'Comedy')
+paramount.movies.create!(
+  title: 'The Terminator',
+  creation_year: 1982,
+  genre: 'Action/Adventure')
 
 # Actors
 actors = [
