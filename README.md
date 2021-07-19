@@ -9,7 +9,7 @@ RSpec and Shoulda-Matchers have been installed and set up.
 1. fork this repo
 2. clone your fork
 3. `git clone <paste_repo>`
-4. `cd b2-mid-mod`
+4. `cd young-thunder-2893`
 5. `bundle install`
 
 ## Instructions
