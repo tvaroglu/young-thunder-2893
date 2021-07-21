@@ -4,5 +4,5 @@ Rails.application.routes.draw do
 
   get '/movies/:id', to: 'movies#show'
   get '/movies/:id/search', to: 'movies#search_actors'
-  post '/movies/:id/add_actor', to: 'movies#add_actor'
+  post '/movies/:id/actors', to: 'movies#add_actor'
 end

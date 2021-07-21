@@ -5,7 +5,7 @@
     <div id="actor-<%= actor.id %>">
       <h3><%= actor.name %></h3>
       <p>Age: <%= actor.age %></p>
-      <%= button_to "Add #{actor.name}", "/movies/#{params[:id]}/add_actor", method: :post, params: { actor_id: "#{actor.id}" } %>
+      <%= button_to "Add #{actor.name}", "/movies/#{params[:id]}/actors", method: :post, params: { actor_id: "#{actor.id}" } %>
       <br><br>
     </div>
   <% end %>
