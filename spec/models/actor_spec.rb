@@ -1,16 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Movie do
+RSpec.describe Actor do
   describe 'relationships' do
-  # movies belong to a studio
-    it { should belong_to(:studio) }
-  # movies can have many actors
+  # actors can be in many movies
     it {should have_many :movie_actors}
-    it {should have_many(:actors).through(:movie_actors)}
+    it {should have_many(:movies).through(:movie_actors)}
   end
 
   describe 'instance methods' do
-    it 'can return #average_actor_age' do
+    it 'can return if an actor is #in_current_movie?' do
       universal = Studio.create!(
         name: 'Universal Studios',
         location: 'Hollywood')
@@ -28,11 +26,16 @@ RSpec.describe Movie do
           age: 10)
         ]
 
-      actors.each { |actor| universal.movies.all.first.actors << actor }
+      expect(actors.first.in_current_movie?(universal.movies.all.first.id)).to be false
 
-      expect(universal.movies.all.first.average_actor_age).to eq(20)
+      universal.movies.all.first.actors << actors.first
+
+      expect(actors.first.in_current_movie?(universal.movies.all.first.id)).to be true
     end
-    it 'can return #actors_sorted_by_age' do
+  end
+
+  describe 'class methods' do
+    it 'can #search for actors to add to a movie' do
       universal = Studio.create!(
         name: 'Universal Studios',
         location: 'Hollywood')
@@ -50,13 +53,7 @@ RSpec.describe Movie do
           age: 10)
         ]
 
-      actors.each { |actor| universal.movies.all.first.actors << actor }
-
-      expected = universal.movies.all.first.actors_sorted_by_age
-
-      expect(expected.length).to eq(2)
-      expect(expected.first).to eq(actors.last)
-      expect(expected.last).to eq(actors.first)
+      expect(Actor.search('actor 1')).to eq([actors.first])
     end
   end
 

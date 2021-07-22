@@ -59,7 +59,7 @@ Some of the initial migrations and model set up has been done for you.
 ```
 Story 1
 Studio Index
- 
+
 As a user,
 When I visit the studio index page
 I see a each studio's name and location
@@ -69,7 +69,7 @@ And underneath each studio, I see the titles of all of its movies.
 ```
 Story 2
 Movie Show
- 
+
 As a user,
 When I visit a movie's show page.
 I see the movie's title, creation year, and genre,
@@ -80,7 +80,7 @@ And I see the average age of all of the movie's actors
 ```
 Story 3
 Add an Actor to a Movie
- 
+
 As a user,
 When I visit a movie show page,
 I do not see any actors listed that are not part of the movie
@@ -96,9 +96,41 @@ And I see the actor's name is now listed
 
 ```
 Coactors
- 
+
 As a user,
 When I visit an actor's show page
-I see that actors name and age 
+I see that actors name and age
 And I see a unique list of all of the actors this particular actor has worked with.
 ```
+
+
+### Notes from Review - 07.21.21:
+#### Best Practices:
+1. Set up database
+
+  `$ rails db:create`
+  * Double-check schema first, then:
+
+    `$ rails db:migrate`
+
+2. Read the user stories, and create additional db tables as needed:
+
+  `$ rails g migration CreateActors name:string age:integer`
+
+  `$ rails db:migrate`
+
+3. TDD feature testing based on provided user stories, to create each route, view, and controller action to accomplish the required stories.
+
+  1. Model test for relationships via `shoulda-matchers`
+  ```ruby
+  # movie_spec.rb
+  describe 'relationships' do
+  # movies belong to a studio
+    it { should belong_to(:studio) }
+  # movies can have many actors
+    it {should have_many :movie_actors}
+    it {should have_many(:actors).through(:movie_actors)}
+  end
+  ```
+  2. Feature test for controller actions, routes, and views
+    
