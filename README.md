@@ -108,29 +108,28 @@ And I see a unique list of all of the actors this particular actor has worked wi
 #### Best Practices:
 1. Set up database
 
-  `$ rails db:create`
-  * Double-check schema first, then:
+    `$ rails db:create`
+    * Double-check schema first, then:
 
-    `$ rails db:migrate`
+      `$ rails db:migrate`
 
 2. Read the user stories, and create additional db tables as needed:
 
-  `$ rails g migration CreateActors name:string age:integer`
+    `$ rails g migration CreateActors name:string age:integer`
 
-  `$ rails db:migrate`
+    `$ rails db:migrate`
 
 3. TDD feature testing based on provided user stories, to create each route, view, and controller action to accomplish the required stories.
 
-  1. Model test for relationships via `shoulda-matchers`
-  ```ruby
-  # movie_spec.rb
-  describe 'relationships' do
-  # movies belong to a studio
-    it { should belong_to(:studio) }
-  # movies can have many actors
-    it {should have_many :movie_actors}
-    it {should have_many(:actors).through(:movie_actors)}
-  end
-  ```
-  2. Feature test for controller actions, routes, and views
-    
+    1. Model test for relationships via `shoulda-matchers`
+    ```ruby
+    # movie_spec.rb
+    describe 'relationships' do
+    # movies belong to a studio
+      it { should belong_to(:studio) }
+    # movies can have many actors
+      it {should have_many :movie_actors}
+      it {should have_many(:actors).through(:movie_actors)}
+    end
+    ```
+    2. Feature test for controller actions, routes, and views
